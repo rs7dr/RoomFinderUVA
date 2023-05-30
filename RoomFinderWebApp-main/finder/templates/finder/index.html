@@ -1,0 +1,189 @@
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link href="css/addons-pro/cards-extended.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100" style="text-align: center">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="#">Room Finder</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'index' %}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                  </li>
+              </div>
+            </div>
+          </div>
+        </nav>
+  
+<div class="d-flex justify-content-center">
+  <a href="https://imgur.com/iiDxEaR"><img src="https://i.imgur.com/iiDxEaR.jpg" title="source: imgur.com" /></a>
+</div>
+<script>
+  $(document).ready(function () {
+    $('img').hide();
+    $('img').fadeIn(3000);
+  });
+</script>
+
+
+<style>
+  body {
+    background-color: #eeeeee;
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  input {
+      border: 2px solid #209fda;
+      box-shadow: 1px 1px 3px rgb(46, 163, 241);
+    font-size: 14px;
+    font-weight: 600;
+  width: 300px;
+      
+      border-radius: 5px;
+  }
+
+  textarea {
+      border: 1px solid #209fda;
+  }
+  .form {
+    background-color: #ffffff;
+    width: 500px;
+    margin: 50px auto 10px auto;
+    padding: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px -3px #333;
+    text-align: center;
+  }
+</style>
+<!-- <div class="form-container container center" style="text-align: center; width: 100vw; padding-top: 4em;  ">
+  <form method="get" action="#">
+      <a href="{% url 'profile' %}" class="btn btn-primary">Profile</a>
+  -->
+
+<body>
+  <div class="form-container container center" style="text-align: center; width: 100vw; padding-top: 4em;  ">
+      <h1 class="display-6 text-primary">Search for a Room in Thornton Hall!</h1>
+      <form method="post">
+          {% csrf_token %}
+          <br>
+          <label> What time would you like to search?</label>
+          <br>
+          <input type="text" name="time_searched" style="width:300px" placeholder="Ex: 1:00pm">
+          <br><br>
+          <label> What day would you like to search?</label>
+          <br>
+          <select name="day_searched" id="day_searched">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+          <br><br>  
+          <button type="submit" class="btn btn-outline-primary mr-1">
+              Search for room
+          </button>
+      </form>
+
+    {% if user_clicked_search %}
+      {% if rooms_found %}
+        <div>Rooms found by searching "{{ time_searched }} and "{{ day_searched }}":</div>
+          <table class="td mx-auto">
+              <tr>
+                  {% for room in rooms_found %}
+                    <tr>{{ room.room_number }} <br></tr>
+                  {% endfor %}
+              </tr>
+          </table>
+      {% else %}
+        <h2 class="display-6 text-secondary">Sorry, no room found.</h2>
+      {% endif %}
+    {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <br>
+          <label>Make a reservation by entering your email, a room, and a time.</label>
+          <br>
+          <br>
+          <input type="text" name="student_email" style="width:300px" placeholder="Ex: a@gmail.com">
+          <br>
+          <br>
+          <input type="text" name="reservation_room" style="width:300px" placeholder="Ex: D222">
+          <br>
+          <label> What day would you like to reserve?</label>
+          <br>
+          <select name="reserved_day" id="reserved_day">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+          </select>
+          <br><br>
+          <select name="reservation_time" id="reservation_time">
+            <option value="8:00AM">8:00AM - 9:00AM</option>
+            <option value="9:00AM">9:00AM - 10:00AM</option>
+            <option value="10:00AM">10:00AM - 11:00AM</option>
+            <option value="11:00AM">11:00AM - 12:00PM</option>
+            <option value="12:00PM">12:00PM - 1:00PM</option>
+            <option value="1:00PM">1:00PM - 2:00PM</option>
+            <option value="2:00PM">2:00PM - 3:00PM</option>
+            <option value="3:00PM">3:00PM - 4:00PM</option>
+            <option value="4:00PM">4:00PM - 5:00PM</option>
+            <option value="5:00PM">5:00PM - 6:00PM</option>
+            <option value="6:00PM">6:00PM - 7:00PM</option>
+            <option value="7:00PM">7:00PM - 8:00PM</option>
+            <option value="8:00PM">8:00PM - 9:00PM</option>
+          </select>          
+          <br><br>
+          <button type="submit" class="btn btn-outline-primary mr-1">
+              Make reservation
+          </button>
+      </form>
+        {% if reservation_room %} 
+          {% if reservation_success %}
+            <p>Success! You created a reservation for {{reservation_room}} at {{reservation_time}}.</p>
+          {% else %}
+            {% if email_is_valid %}
+              <p>Time and room are either already taken</p>
+            {% else %}
+              <p>The student email you entered does not exist in our database.</p>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+  </div>  
+</body>
+
